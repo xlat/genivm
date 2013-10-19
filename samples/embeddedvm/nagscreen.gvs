@@ -1,0 +1,980 @@
+#tabsize:2
+.data
+#.memsize 1_024
+begin_crypted:
+mods:						dword 0, user32lib, gdi32lib, shell32lib, ntdlllib 0
+func_tables:		dword k32_table, u32_table, g32_table, s32_table, ntdll_table
+	user32lib:		string 'user32.dll'
+	gdi32lib:			string 'gdi32.dll'
+	shell32lib:		string 'shell32.dll'
+	ntdlllib:			string 'ntdll.dll'
+	window_class:	string 'Window Class'
+	wtitle:				string 'EmbeddingPerl v1.0 - Evaluation version'
+	button_class:	string 'BUTTON'
+	static_class:	string 'STATIC'
+	str_pattern:	string 'Evaluate (%d)'
+	but_eval:			string 'Evaluate (10)'
+	but_evalok:		string 'Evaluate'
+	but_buy:			string 'Buy'
+	but_cancel:		string 'Cancel'
+	eval_not_ok:	string 'Evaluation NOT initialized !'
+	stat_msg:			string 'The Evaluation period has ended. 
+	
+Please consider purchasing the library. 
+
+
+Click on the "buy" button to visit our website. 
+
+You can wait until the "evaluate" button became available.
+
+If you click the "cancel" button, active application will be terminated.'
+	open_str:			string 'open'
+	url_str:			string 'http://embeddingperl.com/buy'
+	url_err:			string 'Could not open the url !'
+	url_err_cap:	string 'Buy online'
+	internal_err: string 'An internal error occured (EmbeddingPerl!)'
+	canceled_by_user:
+								string 'Process canceled by user.'
+	v_values:											; Registration checking.
+	v_len:				dword 1					; idem
+	v_voyel:			dword 2					; idem
+	v_others:			dword 3					; idem
+	v_crc1:				dword 4					; idem
+	v_crc2:				dword 5					; idem
+	v_validsum:		dword 6					; idem
+	deadline:			dword 20120901	; <-------------------------------------- DEAD LINE : Show popup = YYYMMDD
+	systemtime:		dword SYSTEMTIMESTR
+SYSTEMTIMESTR:	
+	wYear: 				word 0
+	wMonth:				word 0
+	wWeekDay:			word 0
+	wDay:					word 0
+	wHour:				word 0
+	wMinute:			word 0
+	wSecond:			word 0
+	wMilliseconds:word 0
+	do_init_1:	dword 0xcaca
+	do_init_2:	dword 0xdada
+	do_init_3:	dword 0xcafe
+	chk_inits:	dword 0xfeed
+	get_keycie:	dword 0x0622
+	
+#Function tables must be alpah-ordered !
+k32_table:														
+	checkremotedebuggerpresent: 
+											dword 0x2BDA3A66
+	fatalappexit:				dword 0xD2FA6917	;FatalAppExitA(UINT uAction,LPCTSTR lpMessageText)
+	fatalexit:					dword 0x8ECA75CD	
+	freelibrary:				dword 0x999CD17F
+	getlasterror:				dword 0x4195901A
+	getmodulehandlea:		dword 0xAA715D06
+	getsystemtime: 			dword 0x6891E8A4
+	gettickcount:				dword 0xEDBA2568
+	isdebuggerpresent:	dword 0x05AE0975
+	loadlibrarya:				dword 0x351F9AF3
+											dword 0x0	# end of functions
+
+ntdll_table:
+	rtlgetlastwin32error:	
+											dword 0xBB123A2A
+											dword 0x0
+
+u32_table:
+	beginpaint: 				dword 0x021CF4B6
+	createwindowexa:		dword 0x5DB7E69F
+	defwindowproca: 		dword 0x6835E7AC
+	destroywindow:			dword 0x4AD3B107
+	dispatchmessagea:		dword 0x703EEA6E
+	drawicon: 					dword 0x67C78C04
+	enablewindow:				dword 0x97F5C948
+	endpaint: 					dword 0x206F6728
+	getmessagea:				dword 0x3CD0E9B5
+	getsystemmetrics:		dword 0x29CE1440
+	killtimer:					dword 0xC1E0F3ED
+	loadicona:					dword 0x1C263460
+	messageboxa:				dword 0x78DB5A3F 
+	postquitmessage:		dword 0x2F4D2084
+	registerclassexa:		dword 0xD3208667
+	sendmessagea:				dword 0x65FBCAC1
+	settimer:						dword 0xF840CF6A
+	setwindowtexta:			dword 0xC875FC43
+	showwindow:					dword 0x42B4DAC6
+	translatemessage:		dword 0x363AD5E7
+											dword 0x0	# end of functions
+g32_table:						
+	getstockobject:			dword 0x67E564DA
+											dword 0x0 # end of functions
+s32_table:
+	shellexecutea:			dword 0x5FDFA71A
+											dword 0x0	# end of functions
+end_crypted:
+	
+WNDCLASSEX:
+	mcbSize:						dword 48			; sizeof(WNDCLASSEX)
+	mstyle:							dword 0x283		; CS_HREDRAW|CS_VREDRAW | DS_MODALFRAME | CS_NOCLOSE
+	mlpfnWndProc:				dword 0
+	mcbClsExtra:				dword 0
+	mcbWndExtra:				dword 0
+	mhInstance:					dword 0
+	mhIcon:							dword 0
+	mhCursor:						dword 0
+	mhbrBackground:			dword 0x10		; COLOR_APPWORKSPACE +1
+	mlpszMenuName:			dword 0
+	mlpszClassName:			dword window_class
+	mhIconSm:						dword 0
+PAINTSTRUCT:					dword 0	#HDC
+											dword 0 #fErase
+											dword 0, 0, 0, 0 #rcPaint
+											dword 0 #fRestore
+											dword 0 #fIncUpdate
+											byte 0,0,0,0,0,0,0,0	#rgbReserved[32]
+											byte 0,0,0,0,0,0,0,0
+											byte 0,0,0,0,0,0,0,0
+											byte 0,0,0,0,0,0,0,0
+paintstrptr:					dword PAINTSTRUCT
+MSG:									dword 0, 0, 0, 0, 0, 0, 0	; sizeof(MSG) = 28
+msgptr:								dword MSG
+hwnd:									dword 0	
+hWndStatic:						dword 0	
+hWndButton1:					dword 0	
+hWndButton2:					dword 0	
+hWndButton3:					dword 0	
+but_eval_id:					dword 101		;TODO: could be randomized at startup
+but_buy_id:						dword 102
+but_cancel_id:				dword 103
+stat_msg_id:					dword 104
+timer_id:							dword 105
+hFont:								dword 0
+hOnion:								dword 201
+ori_cpu:							dword 0
+end_loop:							dword 0
+a_private_byte:				byte 0
+endofmemory:					byte 255
+peb_ptr:          		dword 0
+.code
+  push r0, 0
+	call swap_crypted_state, 0
+	pop m@peb_ptr, 0
+	call gen_k32, 0
+	pop [mods], 0	;copy k32
+	#got loadlib  (and others k32 !)
+	push 0, 0
+	call findlibprocs, 0
+  
+	#while [mods++] : [mods] = loadlibrary( [mods] )
+	mov r1, mods
+nextmod:
+	add r1, 4
+	cmp m[r1], 0
+	jz no_more_mod, >
+;print m[r1], 100	; %d
+;print 32, 99			; %c
+	mov r2, m[r1]
+	vm2h r2, r2			; convert VM to Host pointers
+	push r2, 0
+;print r2, 115			; %s
+;print 32, 99			; %c
+	hcall m@loadlibrarya, 1
+	mov m[r1], r0
+;print m[r1], 88		; %X
+;print 47, 99			; %c, '/'
+;printl r1, 88		; %X
+	push r1, 0
+	push r1, 0
+	call findlibprocs, 0
+	pop r1, 0
+	jmp nextmod, 0
+no_more_mod:
+###############################################################
+	api m@get_keycie, 0	;get key pointer
+	cmp r0, 0
+	jz check_for_timelimit, >
+	mov r1, r0
+	api m@get_keycie, 1	;get cie pointer
+	cmp r0, 0
+	jz check_for_timelimit, >	
+	push r0, 0
+	push r1, 0
+	call check_key, 0
+	cmp r0, 1
+	jz do_not_show_popup, show_popup	;>
+check_for_timelimit:
+	vm2h m@systemtime, m@systemtime
+	mov r0, m@systemtime
+	push r0, 0
+	hcall m@getsystemtime, 1
+	# formula is (year * 100 + month) * 100 + day
+	movzw r0, m@wYear
+	mul r0, 100
+	movzw r1, m@wMonth
+	add r0, r1
+	mul r0, 100
+	movzw r1, m@wDay
+	add r0, r1
+	cmp r0,m@deadline
+	jge show_popup, >
+do_not_show_popup:	
+	;Here we call all API one after one : We should hide this !
+	api m@do_init_1, 0	; do_init_1
+	mov r1, 11
+do_ten_times:
+	api m@do_init_2, 0	; do_init_2
+	sub r1, 1
+	cmp r1, 0
+	jnz do_ten_times, >
+	api m@do_init_3, 0	; do_init_3
+	api m@chk_inits, 1
+	cmp r0, 3
+	jnz die_hard, stop_app
+show_popup:
+	hcall m@gettickcount, 0
+	mov m@ori_cpu, r0
+	#Now we can create windows.
+	#TODO: we will have to implement a callback-wrapper for our VM functions
+	# so they could be passed to API.
+	# eg:	
+	mov r0, vm_winproc
+	mkcb r0, 4  
+	#	          		;will create a host-pointer to a c-wrapper 
+	#								;callback that will keep reference to VM + wanted-ip
+	#								;and it will automatically copy rightop.dword bytes
+	#								;in the stack. Be care: our VM must became thread-
+	#								;safe, use CriticalSection, Wait... (c-mainloop of
+	#								;the VM must do some "yield()" to lets other treads
+	#								;to be pumped.
+	#								;The callback will always assumes the return value
+	#								;is in r0 (like eax in win32-asm).
+	mov m@mlpfnWndProc,r0
+	vm2h m@mlpszClassName, m@mlpszClassName
+	push 0, 0
+; print 35, 99	; %c, 
+; print m@getmodulehandlea, 88	; %X
+; printl 35, 99	; %c, )
+	hcall m@getmodulehandlea, 1	; retrieve our hinstance
+; printl r0, 88; %c,
+	mov m@mhInstance, r0
+	push m@mhInstance, 0
+	push m@hOnion, 0			; contain icon ID
+	hcall m@loadicona, 2
+	mov m@hOnion, r0
+; printl m@hOnion, 88
+	api 0x12345678, 201
+	mov m@hOnion, r0
+; printl m@hOnion, 88	
+	mov m@mhIcon,m@hOnion
+	mov m@mhIconSm,m@hOnion
+	vm2h m@paintstrptr, m@paintstrptr
+#create window	
+	mov r0, WNDCLASSEX
+	vm2h r0, r0
+	push r0, 0
+; print 36, 99	; %c, $
+; printl r0, 88	
+	hcall m@registerclassexa, 1
+; print 37, 99	; %c, $%	
+; printl r0, 88
+	cmp r0, 0
+	jz halt_with_error, >
+; dump m@mlpszClassName, 100
+	push 0x00040008, 0						; WS_EX_APPWINDOW | WS_EX_TOPMOST
+	push m@mlpszClassName, 0			; class name
+	mov r0, wtitle								;
+	vm2h r0, r0										;
+	push r0, 0										; Window Title
+	push 0x00C80000, 0						; WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU
+	; push 0x80000000, 0					;	CW_USEDEFAULT
+	; push 0x80000000, 0					; CW_USEDEFAULT
+	; for centering on the screen
+	push 0, 0										; SM_CXSCREEN	= 0
+	hcall m@getsystemmetrics, 1		;	
+	sub r0, 450										;
+	div r0, 2											;
+	push r0, 0										; X centered
+	push 1, 0										; SM_CYSCREEN = 1
+	hcall m@getsystemmetrics, 1		;
+	sub r0, 250										;
+	div r0, 2											;
+	push r0, 0										; Y centered
+	push 450, 0									;
+	push 250, 0									;
+	push 0, 0										;
+	push 0, 0										;
+	push m@mhInstance, 0					;
+	push 0, 0										;
+	hcall m@createwindowexa, 12
+; print 72, 99	; %c, H
+; print 61, 99	; %c, =
+; printl r0, 88	
+;cmp r0, 0
+;jnz after_error, >
+;; hcall m@getlasterror, 0
+;hcall m@rtlgetlastwin32error, 0
+;print 33, 99	; %c, !
+;printl r0, 88	
+;after_error:
+	mov m@hwnd, r0
+																; hWndNag=CreateWindowEx(
+																; WS_EX_APPWINDOW | WS_EX_TOPMOST,
+																; "Window Class",
+																; "EmbeddingPerl v1.0 - Evaluation",
+																; WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU /*WS_OVERLAPPEDWINDOW */ ,
+																; CW_USEDEFAULT, CW_USEDEFAULT, 
+																; 350, 200,
+																; NULL,
+																; NULL,
+																; hInst,
+																; NULL);
+
+	push m@hwnd, 0								; hWndNag
+	push 0x05, 0									; SW_SHOW
+	hcall m@showwindow, 2
+; print 59, 99	; %c, ;
+; printl r0, 88	
+; print 59, 99	; %c, ;
+; printl m@msgptr, 88	
+	vm2h m@msgptr, m@msgptr
+; print 58, 99	; %c, :
+; printl m@msgptr, 88
+; dump m@msgptr, 28
+	; push 28, 0										; sizeof( MSG )
+	; push m@msgptr, 0
+	; hcall m@zeromemory, 2					; Not needed in my case !
+;window main loop
+wmainloop:
+	push m@msgptr, 0
+	push 0, 0
+	push 0, 0
+	push 0, 0
+	hcall m@getmessagea, 4
+; print 60, 99
+; print r0, 88
+; print 62, 99
+; dump m@msgptr, 28
+	cmp r0, 0
+	jz wendloop, >
+	cmp m@end_loop, 0
+	jnz wendloop, >
+	push m@msgptr, 0
+	hcall m@translatemessage, 1	
+	push m@msgptr, 0
+	hcall m@dispatchmessagea, 1
+	jmp wmainloop, 0
+wendloop:
+	push m@hwnd, 0								; hWndNag
+	push 0x00, 0									; SW_HIDE
+	hcall m@showwindow, 2
+	push m@hwnd,0
+	hcall m@destroywindow, 0
+	cmp m@end_loop,2
+	jz stop_host_app, >
+	; #Look at our globals variables
+	api m@chk_inits, 1
+	cmp r0, 3
+	jnz die_hard, >
+	; BOOL WINAPI CheckRemoteDebuggerPresent(HANDLE hProcess, PBOOL pbDebuggerPresent);
+	; hcall m@getcurrentprocessid, 0
+	; push r0, 0
+	; mov r0, a_private_byte
+	; vm2h r0, r0
+	; hcall m@checkremotedebuggerpresent, 0
+	; cmp m@a_private_byte, 0
+	; jz die_hard, >	
+	hcall m@isdebuggerpresent, 0
+; printl r0, 88	
+	cmp r0, 0
+	jz stop_app, >
+die_hard:
+	push m@fatalexit, 0
+	push 0, 0
+	mov r0, eval_not_ok
+	vm2h r0, r0
+	push r0, 0
+	mov r0, wtitle
+	vm2h r0, r0
+	push r0, 0
+	push m@hWnd, 0
+	; hcall m@messageboxa, 4
+	hjmp m@messageboxa, 5
+stop_host_app:	
+	; printl 0xdead, 88	
+	push 0xFF_FF_FF_FF, 0
+	mov r0, canceled_by_user
+	vm2h r0,r0
+	push r0, 0
+	hcall m@fatalappexit, 2
+stop_app:
+	stop 0, 0
+	ret 0, 0
+	##################################################
+; scan hashes
+	#for all precomputed hash, retrieve matching pointer
+	# in KERNEL32 : "hard coded"
+	# in USER32,SHELL32,GDI32 : scan mods and replace vm addr by hmod addr (for freeing prupose)
+	; use r0..r16 (par contagion de calc_hash)
+findlibprocs:
+	#given a mods-id, resolv all its wanted functions ( where we have ask hashes )
+	pop r9, 0			; r9 is the mod-id
+ ; print 60, 99			; %c, '<'	
+ ; print r9,100			; %d
+ ; print 61, 99			; %c, '='
+ ; print m[r9],88		; %X,
+ ; print 62, 99			; %c, '>'
+ ; print 9, 99			; %c, '\t'
+	mov r0, m[r9]	; get ModuleHandle
+	mov r11, func_tables
+ ; print r11,88		; %X,
+ ; print 59,99 		; %c, ';'
+	add r11, r9
+ ; print r11,88		; %X,	
+ ; print 59,99		; %c,	';'
+ ; printl m[r11],88		; %X,	
+	mov r11, m[r11]
+ ; printl m[r11],88		; %X,	
+ 
+; mov r30, 0
+; vm2h r30, r30
+; dump r30, endofmemory
+; stop 0, 0
+
+	mov r1, r0
+	add r1, 0x3c
+	mov r2, h[r1]	; a pointer to pe signature
+	add r2, 0x78
+	add r2, r0
+	mov r2, h[r2]	; r2 = RVA export table
+	add r2, r0		; r2 = Virtual Address of RVA export table
+	mov r3, r2		;
+	add r3, 0x20	;
+	mov r3, h[r3]	;
+	add r3, r0			; r3 = RVA NamePointer 
+	mov r7, r2		; 
+	add r7, 0x1c	; 
+	mov r7, h[r7]	;
+	add r7, r0		; r7 = Virtual Address of ExportAddressTableRVA
+; add r7, 4  
+  mov r9, r2
+  add r9, 0x24  ; OrdinalPointer
+; print 32, 99  
+; print r9, 88
+; print 32, 99  
+  mov r9, h[r9]
+; print r9, 88
+; print 32, 99  
+  add r9, r0
+; printl r9, 88
+; dump r9, 32
+  
+	mov r4, r2		;
+	add r4, 0x18	;
+	mov r4, h[r4]
+	mov r2, h[r2]	; r4 = number of entries in "RVA NamePointer"
+h_getnext:
+	mov r5, r0
+	add r5, h[r3]
+
+;Output to console
+	; print r4, 100			;	'd' = 100 | print current id
+	; print 32, 99			
+	; print r5, 115			;		's' = 115
+	; print 61, 99			;		%c, '='
+	
+	push r11, 0
+	push 1,0            ; mode char* 
+	push r5,0
+	call calc_hash,0		;	compute hash
+	pop r6, 0
+	pop r11, 0
+; print r6, 88	 		  	;		'X' = 88
+; print 32, 99		    ;		%c, '='
+; print 61, 99		 	   ;		%c, '='
+; print 61, 99			   ;		%c, '='
+; print 32, 99		    	;		%c, '='
+; print r11, 88			;		'X' = 88
+; print 32, 99		    	;		%c, '='
+; printl m[r11], 88			;		'X' = 88
+	cmp r6, m[r11] 			;	compare with next wanted HASH
+	jnz h_not_match, >
+  
+; printl 36, 99
+; printl r9, 88
+  mov r8, h[r9]
+  and r8, 0xFFFF
+; printl r8, 88
+  mul r8, 4
+; printl r8, 88  
+	; add r8, r0
+  add r8, r7
+; printl r8, 88  
+  mov r8, h[r8]
+  add r8, r0
+; printl r8, 88  
+	mov m[r11], r8 			;	replace HASH by ProcAddress
+	add r11, 4					; goto next procs
+; stop 0, 0  
+	; print r6, 88				;		'X' = 88
+	; print 32, 99				;	' '	'c' = 99
+	; print r5, 115				;		's' = 115
+	; print 32, 99				;	' '
+	; print 40, 99				;   '('
+	; print r8, 88				;	Function's address
+	; printl 41, 99				;   ')'	
+; print 59,99		; %c,	';'
+; printl m[r11],88		; %X,		
+; print 59,99		; %c,	';'
+	
+	cmp m[r11], 0					;	
+	jnz h_not_match, >	; Ne plus calculer les hashes inutilements.
+	ret 0, 0						;
+h_not_match:
+	add r3, 4						; next str ptr
+	; add r7, 4						; next addr ptr
+  add r9, 2  
+; print 59, 99
+; print r9, 88
+; print 59, 99
+; printl r7, 88
+; dump r9, 32
+	sub r4, 1						; dec counter
+	cmp r4, 0
+	jnz h_getnext, >
+	ret 0, 0
+
+gen_k32:  
+  mov r0, m@peb_ptr 
+  add r0, 0xC
+  mov r0, h[r0]     ; _PEB_LDR_DATA
+  add r0, 0x1C
+  mov r0, h[r0]     ; InInitialisationOrderModuleList
+  mov r1, r0        ; r1 ecx
+  mov r2, r0        ; r2 eax
+test_next_libs:  
+  mov r0, r2
+  mov r0, h[r0]     ; FLINK
+  mov r2, r0
+  add r0, 0x18
+  mov r4, h[r0]     ; DLL Image Base
+  mov r0, r2
+  add r0, 0x20
+  push 2, 0         ; mode wide char
+  push h[r0],0      ; DLL Base Name (in utf16-le)
+  call calc_hash, 0
+  pop r3, 0
+  cmp r3, 0xBD1D39D8 ; hash of "wide char" kernel32.dll
+  jz found_libs, >
+  cmp r1, r2
+  jnz test_next_libs, >
+  xor r2, r2
+  jmp k32_not_found, k32_not_found
+found_libs:
+  add r2, 0x8
+  mov r2, h[r2]
+k32_not_found:
+; print 32, 99
+; print r2, 88
+; stop 0,0
+	push r2, 0			  #mov KERNEL32MOD, eax;
+	ret 0, 0				  #must be 0x7c80_000 on XP 
+                    #and 0x767A_0000 on Seven
+	
+	; use r10 .. r16
+calc_hash:
+	pop r10, 0				; the string pointer
+  pop r17, 0        ; char* or wchar * ??
+	mov r11,  0xF00D	; r11 = hash
+	xor r13,r13				; len (calculated in loop) = i
+	mov r15, 3				; prec
+next_char:
+	movzb r12, h[r10]	; read a byte (zero-ify other bits)
+	cmp r12, 0
+	jz last_char, >
+	cmp r17, 2
+	jnz ch_case_sensitive, >
+	or r12, 0x20			; make lowercase (for '.' => '.')
+ch_case_sensitive:
+	add r13, 1				; i++
+	mov r14, r13
+	mul r14, 123
+	div r14, r15
+	add r14, r12
+	add r11, r14
+	mov r15, r12			; prec = (DWORD) *name
+	mov r16, 8
+	sub r16, r15
+	mul r11, r16
+	add r10, r17			; name += 1 | 2
+	jmp next_char, 0
+last_char:
+	add r11, r13
+	push r11, 0			; hash stored in stack
+; print 32, 99
+; print r11, 88	
+	ret 0, 0
+	
+	
+vm_winproc:					#The Winproc !
+	pop r1, 0					; hwnd
+	pop r2, 0					; msg
+	pop r3, 0					; wparam
+	pop r4, 0					; lparam
+; print 36, 99				; $
+; print r1, 88
+; print 95, 99
+; print r2, 88
+; print 95, 99
+; print r3, 88
+; print 95, 99
+; print r4, 88
+; printl 32, 99
+	######################################################
+	#do some works but do not corrupt r0, r1 , r2 or r3 !
+	######################################################
+	cmp r2, 0x0002			; WM_DESTROY
+	jnz wndprocmsg2, >
+	push 0, 0
+	hcall m@postquitmessage, 1	; PostQuitMessage(0);	
+	mov m@end_loop,2
+	ret 0, 0										; return 0;	
+wndprocmsg2:	################################################
+	cmp r2, 0x0113			; WM_TIMER
+	jnz wndprocmsg3, >
+	cmp r3, m@timer_id
+	jnz wndprocmsg6, >	
+	api m@do_init_2, 0	; do_init_2
+	hcall m@gettickcount, 0
+	sub r0, m@ori_cpu
+	cmp r0, 10500
+	jge wndprocmsg2b, >
+	div r0, 1000
+	neg r0, r0
+	add r0, 11
+	mov r8, but_eval
+	mov r9, str_pattern
+	vm2h r8, r8
+	vm2h r9, r9
+	push r0, 0
+	sprintf r8, r9	; push arg; Sprintf(buffer,pattern[,arg])
+	push m@hWndButton1, 0
+	push r8, 0
+	hcall m@setwindowtexta, 2
+	jmp wndprocmsg6, 0
+wndprocmsg2b:
+;Desactiver le timer
+	push r1, 0
+	push m@timer_id, 0
+	hcall m@killtimer, 2
+	api m@do_init_1, 0	; do_init_1
+	
+	push m@hWndButton1, 0
+	mov r8, but_evalok
+	vm2h r8, r8
+	push r8, 0
+	hcall m@setwindowtexta, 2
+	
+	push m@hWndButton1, 0
+	push 1, 0
+	hcall m@enablewindow, 2
+	jmp wndprocmsg6, 0
+wndprocmsg3:	################################################
+	cmp r2, 0x0001			; WM_CREATE
+	jnz wndprocmsg4, >
+	#TODO Creating controls
+	push 17, 0								; DEFAULT_GUI_FONT = 1
+	hcall m@getstockobject, 1	;
+	mov m@hFont, r0						; r10 = hFont
+#Create Evaluated Button
+	push button_class, 0
+	push but_eval, 0
+	push 0x58010000, 0			; WS_TABSTOP| WS_DISABLED | WS_VISIBLE | WS_CHILD
+	; push 0x50010000, 0			; A DES FINS DE TESTS
+	push 100, 0
+	push 170, 0
+	push 100, 0
+	push 24, 0	
+	push m@but_eval_id, 0
+	push r1, 0							; parent control
+	call create_control, 0
+	pop m@hWndButton1, 0
+#Create Buy Button
+	push button_class, 0
+	push but_buy, 0
+	push 0x50010001, 0			; WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_DEFPUSHBUTTON
+	push 210, 0
+	push 170, 0
+	push 50, 0
+	push 24, 0	
+	push m@but_buy_id, 0
+	push r1, 0							; parent control
+	call create_control, 0
+	pop m@hWndButton2, 0
+#Create Buy Button
+	push button_class, 0
+	push but_cancel, 0
+	push 0x50010000, 0			; S_TABSTOP|WS_VISIBLE|WS_CHILD
+	push 270, 0
+	push 170, 0
+	push 75, 0
+	push 24, 0	
+	push m@but_cancel_id, 0
+	push r1, 0							; parent control
+	call create_control, 0
+	pop m@hWndButton3, 0
+#Create msg static
+	push static_class, 0
+	push stat_msg, 0
+	push 0x50000000, 0			; S_TABSTOP|WS_VISIBLE|WS_CHILD
+	push 75, 0
+	push 20, 0
+	push 340, 0
+	push 150, 0	
+	push m@stat_msg_id, 0
+	push r1, 0							; parent control
+	call create_control, 0
+	pop m@hWndStatic, 0
+	################################################
+	push r1, 0							; parent Hwnd
+	push m@timer_id, 0
+	push 1005, 0
+	push 0, 0
+	hcall m@settimer, 4			; SetTimer(hWnd, TIMER_EVALBUTTON, 1000, NULL);	
+	jmp wndprocmsg6, 0
+wndprocmsg4:	################################################
+	cmp r2, 0x000F			; WM_PAINT
+	jnz wndprocmsg5, >	
+	push r1, 0							; hwnd
+	push m@paintstrptr, 0	; &paint;
+	hcall m@beginpaint, 2		; hDC = BeginPaint( hWnd, &paint );
+	push r0, 0
+	push 10, 0
+	push 20, 0
+	push m@hOnion, 0
+	hcall m@drawicon, 4			; DrawIcon( hDC, 10, 20 , hOnion);
+	push r1, 0
+	push r2, 0
+	hcall m@endpaint, 2			; EndPaint( hWnd, &paint);
+	jmp wndprocmsg6, 0
+ wndprocmsg5:	################################################
+	cmp r2, 0x0111			; WM_COMMAND
+	jnz wndprocmsg6, >
+	mov r0, r3
+	and r0, 0x0FFFF		; LOWORD( wParam )
+	cmp r0, m@but_eval_id
+	jnz wndprocmsg5a, >
+	hcall m@gettickcount, 0
+	mov r1, m@ori_cpu
+	sub r1, r0
+	cmp r1, 10999
+	jle wndprocmsg5a, >
+	api m@do_init_3, 0					; call do_init_3
+	push 0, 0
+	hcall m@postquitmessage, 1	; PostQuitMessage(0);
+	mov m@end_loop,1
+	jmp wndprocmsg6, >
+wndprocmsg5a:	###########################################<<<<
+	cmp r0, m@but_buy_id
+	jnz wndprocmsg5b, >
+	
+	push m@hWnd, 0
+	mov r0, open_str
+	vm2h r0, r0
+	push r0, 0
+	mov r0, url_str
+	vm2h r0, r0
+	push r0, 0
+	push 0, 0
+	push 0, 0
+	push 3, 0		; SW_SHOWMAXIMIZED = 3
+	; debugbreak 0, 0
+	hcall m@shellexecutea, 6
+	cmp r0, 32
+	jg wndprocmsg6, >
+#TODO:
+	push 0, 0
+	mov r0, url_err
+	vm2h r0, r0
+	push r0, 0
+	mov r0, url_err_cap
+	vm2h r0, r0
+	push r0, 0	
+	push 0, 0
+	hcall m@messageboxa, 4		;	"Could not open the url !", "Buy online"
+	jmp wndprocmsg6, 0
+wndprocmsg5b:	###########################################<<<<
+	cmp r0, m@but_cancel_id
+	jnz wndprocmsg6, >
+	push 0, 0
+	hcall m@postquitmessage, 1	; PostQuitMessage(0);
+	mov m@end_loop,2
+ wndprocmsg6:	###########################################<<<<
+	push r1, 0	
+	push r2, 0
+	push r3, 0
+	push r4, 0
+	hcall m@defwindowproca, 4		# defwindowproca(hWnd,msg,wParam,lParam)
+; printl r0, 88
+	ret r0, 0
+
+create_control:
+	pop r28, 0			; Parent HWND
+	pop r27, 0			; Control-ID
+	pop r26, 0			; Height
+	pop r25, 0			; Width
+	pop r24, 0			; Y
+	pop r23, 0			; X
+	pop	r22, 0			; dwStyle
+	pop r21, 0			; Text ptr in VM
+	pop r20, 0			; Class ptr in VM
+	vm2h r20, r20									;
+	vm2h r21, r21									;
+	push 0, 0										; NULL
+	push r20, 0									; BUTTON or STATIC
+	push r21, 0									; CONTROL TEXT
+	push r22, 0									; dwStyle
+	push r23, 0									;	X
+	push r24, 0									; Y
+	push r25, 0									; Width
+	push r26, 0									; Height
+	push r28, 0									;	Parent Handle
+	push r27, 0									; control-Id
+	push m@mhInstance, 0					;
+	push 0, 0										;
+; ##########
+	hcall m@createwindowexa, 12	;
+	mov r20, r0
+	push r0, 0
+	push 0x030, 0							; WM_SETFONT
+	push m@hFont, 0
+	push 1, 0
+	hcall m@sendmessagea, 4			;SendMessage (hWndButton1, WM_SETFONT, (WPARAM)hFont, TRUE);
+	mov r0, r20
+	push r0, 0
+	ret 0, 0
+	
+halt_with_error:
+	push 0xff, 0
+	mov r0, m@internal_err
+	vm2h r0, r0
+	push r0, 0
+	hcall m@fatalappexit, 2
+	stop 0, 0
+
+;#########################################################################
+;# registration key checking
+;#########################################################################
+check_key:
+	;check key
+	;a) split block of hex values (6 values)
+	pop r1, 0
+	; printl r1, 88
+	mov r4, v_values
+ck_next_key_chunk:	
+	xor r3, r3
+ck_next_char:
+	movzb r2, h[r1]
+	add r1, 1
+	; printl r2, 88
+	cmp r2, 0
+	jz ck_end_of_key, >
+	cmp r2, 45	; 45 = '-'
+	jz ck_end_of_key, >
+	cmp r2, 57	; '9' = 57
+	jg ck_ALPHA, >
+	;number
+	add r2, 7	;	'0'	65 - 48 - 10
+ck_ALPHA:
+	;alpha
+	sub r2, 55	;	'A'
+	shl r3, 4
+	add r3, r2
+	jmp ck_next_char, 0
+ck_end_of_key:
+	; printl r3, 88	; print hexa value
+	;b) convert to hex
+	;c) xor with 4242
+	xor r3, 4242
+	; printl r3, 88	; print hexa value
+	mov m[r4], r3
+	add r4, 4
+	cmp r2, 0
+	jnz ck_next_key_chunk, >
+	;v1 = len
+	;v2 = voyels
+	;v3 = others
+	;v4 = crc1
+	;v5 = crc2
+	;v6 = validsum
+	;TEST 1) len + voyel + others + crc1 + crc2 == validsum
+; printl 1, 88
+	xor r0, r0
+	mov r4, [v_len]
+	mov r5, r4
+	add r4, [v_voyel]
+	add r4, [v_others]
+	add r4, [v_crc1]
+	add r4, [v_crc2]
+; printl r4, 88	
+; printl [v_validsum], 88	
+	cmp r4, [v_validsum]
+	jnz ck_check_error, >
+; printl 2, 88
+	;TEST 2) len == voyel + others
+	sub r5, [v_others]
+	sub r5, [v_voyel]
+	cmp r5, 0
+	jnz ck_check_error, >
+; printl 3, 88	
+	;crc2chk ^= ord( company ) : in list context !
+	pop r1, 0
+ck_readchar:
+	movzb r2, h[r1]
+	add r1, 1
+	cmp r2, 0
+	jz ck_test_3, >
+	xor r5, r2
+	jmp ck_readchar, 0
+ck_test_3:	
+	;TEST 3) crc2 == crc2chk
+	cmp [v_crc2], r5
+	jnz ck_check_error, >
+	mov r0, 1	; It is ok
+ck_check_error:	
+	ret 0, 0
+	
+;#########################################################################
+;# [Un]Crypt data between begin_crypted and end_crypted in VM memory #
+;#########################################################################
+swap_crypted_state:
+	mov r0, begin_crypted
+	mov r1, end_crypted
+	sub r1, r0
+; mov r30, r1					;# For debug prupose !!!
+; printl r30, 100
+; printl endofmemory, 100	
+; mov r30, endofmemory
+	; endofmemory the limit of available data to be used to crypt/uncrypt (KEY)
+	mov r3, end_crypted
+	add r3, 4
+	mov r2, 0xFEDBEF
+process_next_dword:
+	xor m[r0], r2
+	add r2, m[r3]			; use bytecode to [un]crypt data :-p : in a later version with c[r3] !
+	add r0, 1
+	add r3, 1
+	cmp r3, endofmemory
+	jl no_reset_key, >
+; print 35, 99
+	mov r3, end_crypted
+	add r3, 4
+no_reset_key:	
+	sub r1, 1
+	cmp r1, 0
+	jnz process_next_dword, >
+ ; mov r0, begin_crypted
+; vm2h r0, r0
+; dump r0, r30					;# For debug prupose !!!
+	ret 0, 0
+; double_swap_crypted_state:
+	; call swap_crypted_state, 0
+	; call swap_crypted_state, 0
+	; stop 0, 0
+.postbuild swap_crypted_state
+; .postbuild double_swap_crypted_state

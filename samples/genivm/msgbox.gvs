@@ -1,0 +1,45 @@
+;!geni_vm.exe
+; MessageBox(0, "title", "Caption", 0)
+;
+; This is a dirty sample of calling an windows API.
+; Here, the address of MessageBoxA and LoadLibraryA are hardcoded, to retrieve them on your system, 
+; compile and run msgbox.c :
+;	cl msgbox.c
+;	msgbox.exe
+;						LoadLibraryA: hmodule=0x75e80000 - func ptr=0x75e949bf
+;						MessageBoxA: hmodule=0x75740000 - func ptr=0x757afd1e
+;
+; Then modify the msgboxptr and loadlibraryptr accordingly.
+
+.data
+MSGBFLG:	
+	dword 0
+caption:
+	string 'Caption of messagebox'
+title:
+	string 'Title of messagebox'
+msgboxptr:
+	dword 0x757afd1e	;0x7e4507ea
+loadlibraryptr:
+	dword 0x75e949bf	;0x7c801d7b
+user32lib:
+	string 'user32.dll'
+
+.code
+	;load user32d.dll
+	vm2h r0, user32lib
+	push 0, 0
+	push r0, 0
+	hcall m@loadlibraryptr, 1
+	;r0 contain the HMODULE (which can be used to retrieve the export table etc...
+	
+	;call msgbox
+	;convert VM ptrs to host ptrs
+	vm2h r1, caption
+	vm2h r2, title
+	push m@MSGBFLG, 0
+	push r1, 0
+	push r2, 0
+	push 0, 0
+	hcall m@msgboxptr, 4		; transferer de la pile VM 4 elements vers la pile du host
+	;here r0 contain the return value	

@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual C++ Express 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "geni_vm", "geni_vm.vcproj", "{90979102-BF52-4248-9BF2-B5729074114A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Library Debug|Win32 = Library Debug|Win32
+		Library Release|Win32 = Library Release|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{90979102-BF52-4248-9BF2-B5729074114A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{90979102-BF52-4248-9BF2-B5729074114A}.Debug|Win32.Build.0 = Debug|Win32
+		{90979102-BF52-4248-9BF2-B5729074114A}.Library Debug|Win32.ActiveCfg = Library Debug|Win32
+		{90979102-BF52-4248-9BF2-B5729074114A}.Library Debug|Win32.Build.0 = Library Debug|Win32
+		{90979102-BF52-4248-9BF2-B5729074114A}.Library Release|Win32.ActiveCfg = Library Release|Win32
+		{90979102-BF52-4248-9BF2-B5729074114A}.Library Release|Win32.Build.0 = Library Release|Win32
+		{90979102-BF52-4248-9BF2-B5729074114A}.Release|Win32.ActiveCfg = Release|Win32
+		{90979102-BF52-4248-9BF2-B5729074114A}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
